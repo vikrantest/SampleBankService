@@ -3,6 +3,6 @@ from django.contrib import admin
 import bankapp.views as bankappViews
 
 urlpatterns = [
-    url(r'^/', admin.site.urls),
+    url(r'^/', bankappViews.AccountView.as_view()),
 ]
  

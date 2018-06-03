@@ -1,18 +1,88 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import sys
+import time
 from django.db import models
+from bankapp.utils import get_time
+
 
 class BaseModel(models.Model):
-	pass
+	created_at = models.IntegerField(blank=False)
+	updated_at = models.IntegerField(blank=False)
 
-class BankAccount(BaseModel):
-	pass
 
+	def save(self,*args,**kwargs):
+		try:
+			if not self.created_at:
+				self.created_at = get_time()
+			self.updated_at = get_time()
+			super(BaseModel,self).save(*args,**kwargs)
+
+		except ValueError:
+			return False
+
+
+class BankCurrency(models.Model):
+	currency_name = models.CharField(max_length = 25)
+	currency_symbol = models.CharField(max_length = 5)
+
+	class Meta:
+		db_table = 'bank_currencies'
 
 class AccountRules(BaseModel):
-	pass
+	min_balance = models.FloatField(default=0.00)
+	max_deposit_per_transaction = models.FloatField(default=0.00)
+	max_deposit_per_day_frequency = models.IntegerField(default=0)
+	max_deposit_per_day = models.FloatField(default=0.00)
+	min_withdrawl_per_transaction = models.FloatField(default=0.00)
+	min_withdrawl_per_day_frequency = models.IntegerField(default=0)
+	min_withdrawl_per_day = models.FloatField(default=0.00)
 
+	class Meta:
+		db_table = 'account_rules'
+
+class BankAccountProfile(BaseModel):
+	first_name = models.CharField(max_length = 10)
+	last_name = models.CharField(max_length = 10)
+	date_of_birth = models.IntegerField(blank=False,null=False)
+	gender = models.CharField(max_length = 10)
+	address = models.CharField(max_length = 200)
+	pincode = models.CharField(max_length = 10)
+	verified = models.BooleanField(default=False)
+	account_id_num = models.CharField(max_length = 50)
+
+	class Meta:
+		db_table = 'account_profile'
+
+class BankAccount(BaseModel):
+	account_profile = models.ForeignKey(BankAccountProfile,related_name = 'bank_accounts_profile')
+	account_number = models.CharField(max_length = 30)
+	account_rules = models.ForeignKey(AccountRules,related_name = 'bank_accounts_rules')
+	account_balance = models.FloatField(default=0.00)
+	account_laser_balance = models.FloatField(default=0.00)
+	account_ifsc = models.CharField(max_length = 20)
+	account_currency = models.ForeignKey(BankCurrency,related_name = 'bank_accounts_currency')
+
+	class Meta:
+		db_table = 'bank_accounts'
+
+	def get_account_currency(self):
+		return self.account_currency.currency_symbol
 
 class Transactions(BaseModel):
-	pass
+	from_account = models.ForeignKey(BankAccount,blank=True,null=True,related_name = 'account_transactions_from_account')
+	to_account = models.ForeignKey(BankAccount,related_name = 'account_transactions_to_account')
+	transaction_id = models.CharField(max_length = 10)
+	transaction_type = models.CharField(max_length = 10)
+	transaction_source = models.CharField(max_length = 10)
+	transaction_amount = models.FloatField(default=0.00)
+	transaction_status = models.CharField(max_length = 10)
+	transaction_start_time = models.IntegerField(blank=False,null=False)
+	transaction_end_time = models.IntegerField(blank=False,null=False)
+
+	class Meta:
+		db_table = 'account_transactions'
+
+
+
