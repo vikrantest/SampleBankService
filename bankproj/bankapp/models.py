@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 import sys
 import time
 from django.db import models
-from bankapp.utils import get_time
+from bankapp.utils import get_time,get_local_day_start_end
 
 
 class BaseModel(models.Model):
@@ -14,6 +14,7 @@ class BaseModel(models.Model):
 
 	def save(self,*args,**kwargs):
 		try:
+			print '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
 			if not self.created_at:
 				self.created_at = get_time()
 			self.updated_at = get_time()
@@ -67,14 +68,25 @@ class BankAccount(BaseModel):
 	class Meta:
 		db_table = 'bank_accounts'
 
-	def get_account_currency(self):
+	def getAccountCurrency(self):
 		return self.account_currency.currency_symbol
 
-class Transactions(BaseModel):
+	def getCurrentDayTransaction(self,timestamp,transaction_type = 'credit'):
+		start_time,end_time = get_local_day_start_end(timestamp)
+		transactions = Transactions.objects.filter(to_account = self,transaction_start_time__gte=start_time,transaction_start_time__lte=end_time,transaction_type=transaction_type)
+		transactions_count = transactions.count()
+		transaction_amount_total = transactions.aggregate(total_amount = models.Sum('transaction_amount'))
+		return [transactions_count,transaction_amount_total['total_amount'] or 0.00]
+
+	def initiateTransaction(self,amount,transaction_time,transaction_type):
+		Transactions.objects.create(to_account=self,transaction_type=transaction_type,transaction_start_time=transaction_time,transaction_end_time=get_time(),transaction_amount=amount)
+
+
+class Transactions(BaseModel):#change to sender and reciever
 	from_account = models.ForeignKey(BankAccount,blank=True,null=True,related_name = 'account_transactions_from_account')
 	to_account = models.ForeignKey(BankAccount,related_name = 'account_transactions_to_account')
-	transaction_id = models.CharField(max_length = 10)
-	transaction_type = models.CharField(max_length = 10)
+	transaction_id = models.CharField(max_length = 10)#change length in next migration
+	transaction_type = models.CharField(max_length = 10)#,choices=[('credit','credit')('debit','debit')])
 	transaction_source = models.CharField(max_length = 10)
 	transaction_amount = models.FloatField(default=0.00)
 	transaction_status = models.CharField(max_length = 10)
@@ -83,6 +95,15 @@ class Transactions(BaseModel):
 
 	class Meta:
 		db_table = 'account_transactions'
+
+	def save(self,*args,**kwargs):
+		try:
+			self.transaction_id = str(self.to_account.account_number[:5]),str(get_time()),str(self.to_account.account_number[6:])
+			super(Transactions,self).save(*args,**kwargs)
+
+		except ValueError:
+			return False
+
 
 
 

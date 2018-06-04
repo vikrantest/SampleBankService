@@ -6,7 +6,7 @@ from rest_framework import serializers
 from bankapp.models import *
 
 class AccountSerializers(serializers.ModelSerializer):
-	currency = serializers.ReadOnlyField(source = 'get_account_currency')
+	currency = serializers.ReadOnlyField(source = 'getAccountCurrency')
 	
 
 	class Meta:
