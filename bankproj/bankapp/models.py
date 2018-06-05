@@ -10,7 +10,6 @@ class BaseModel(models.Model):
 	created_at = models.IntegerField(blank=False)
 	updated_at = models.IntegerField(blank=False)
 
-
 	def save(self,*args,**kwargs):
 		try:
 			if not self.created_at:

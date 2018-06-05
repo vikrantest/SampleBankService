@@ -69,20 +69,21 @@ class RuleEngine:
 		if self.rules_set.max_deposit_per_transaction < amount:
 			return False , 'Exceeded Maximum Deposit Per Transaction.'
 		current_day_transaction = self.currenDayTransactions(bank_account,'credit')
+
 		if current_day_transaction[0] >= self.rules_set.max_deposit_per_day_frequency:
 			return False , 'Exceeded Maximum Deposit Transaction Per Day.'
-		if current_day_transaction[1]+amount >= self.rules_set.max_deposit_per_day:
+		if current_day_transaction[1]+amount > self.rules_set.max_deposit_per_day:
 			return False , 'Exceeded Maximum Deposit Per Day.'
 		return True , 'You are eligible for this transaction'
 
 	def debitTransaction(self,bank_account,amount):
-		if bank_account.account_balance < amount:
-			return False , 'Insufficent Account Balance.'
 		if self.rules_set.min_withdrawl_per_transaction < amount:
 			return False , 'Exceeded Maximum Withdrawal Per Transaction.'
 		current_day_transaction = self.currenDayTransactions(bank_account,'debit')
 		if current_day_transaction[0] >= self.rules_set.min_withdrawl_per_day_frequency:
 			return False , 'Exceeded Maximum Withdrawal Transaction Per Day.'
-		if current_day_transaction[1]+amount >= self.rules_set.min_withdrawl_per_day:
+		if current_day_transaction[1]+amount > self.rules_set.min_withdrawl_per_day:
 			return False , 'Exceeded Maximum Withdrawal Per Day.'
+		if bank_account.account_balance < amount:
+			return False , 'Insufficent Account Balance.'
 		return True , 'You are eligible for this transaction'

@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'j1hkf8fk)rtau&vh!%o4_8#+a9irlecf17*i$h+vy@xr44cv07'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,10 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_nose',
+    'django.contrib.sites',
+    # 'django_nose',
     'rest_framework',
     'bankapp',
-    'buildapp'
+    'buildapp',
 ]
 
 MIDDLEWARE = [
@@ -103,9 +104,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-# TEST_RUNNER = 'xmlrunner.extra.djangotestrunner.XMLTestRunner'
-# TEST_OUTPUT_FILE_NAME = 'unit.xml'
+# TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+TEST_RUNNER = 'xmlrunner.extra.djangotestrunner.XMLTestRunner'
+TEST_OUTPUT_FILE_NAME = 'unit.xml'
 
 #code coverage tool
 NOSE_ARGS = [

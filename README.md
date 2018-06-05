@@ -48,13 +48,23 @@ Build Process
 	1 - Change directory to buildapp folder
 			cd buildapp
 
-	2 - Run "make" file for installing dependencies , creating db and settingup databases structure with test content .You can check the requirements in requirements.txt file inside buildapp folder
-			Command - ./make
+	2 - Run "make" file for installing dependencies , creating db and settingup databases structure with test content .You can check the requirements in requirements.txt file inside buildapp folder . 
+			Command - 
+				./make --setupdb
+					If you are not passing '--setupdb' param in above command , it will not crete db and no basic dataset will get inserted into db and you will see Server Error (500) in API response as no db table exists.
+					NOTE - Incase you want to build the project again without changing anything in DB  , don't use '--setupdb' param (DON'T).
+
 
 	3 - Run "run" file to start Django server on https://localhost:8000/ . If you want to change port number or host , open run file with any editor of you choice and update host and port number on line 7 .Once you are done save the file and run the below command.
 			Command - ./run
 
 	4 - Once server starts successfully , you can start using endpoints discussed in API section below.
+
+	5 - For flushing database and data from existing DB use the below command.
+			Command - ./data_build --setupdb
+
+	6 - For changing schema of any table or creating new table in database use the below command.
+			Command - ./data_build --syncdb
 
 TestCases
 	Initial Step - Go to root directory

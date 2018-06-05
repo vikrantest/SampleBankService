@@ -18,6 +18,7 @@ class BankTestCase(TestCase):
         self.test_2 = []
         self.test_3 = []
         self.host = 'http://localhost:8000'
+        self.post_sample_api = '/bankapp/v1/account/'
         # curr = os.getcwd()
         # os.chdir(curr+'/buildapp')
         # subprocess.call(['./data_build'])
@@ -34,15 +35,13 @@ class BankTestCase(TestCase):
 
     def testSet1(self):
         client = RequestsClient()
-        res = client.post('http://localhost:8000/bankapp/v1/account/',json={})
+        res = client.post(self.host + self.post_sample_api,json={})
         for ro in self.test_1:
             row = json.loads(ro)
             res = {}
             if row['request']['method'] == "GET":
                 url = self.host + row['request']['url'] + '/'
-                print url
                 res = client.get('http://localhost:8000' + row['request']['url'] + '/')
-                print res.text
             elif row['request']['method'] == "POST":
                 res = client.post(
                     self.host + row['request']['url'] + '/', json=row['request']['body'])
@@ -52,7 +51,7 @@ class BankTestCase(TestCase):
 
     def testSet2(self):
         client = RequestsClient()
-        res = client.post('http://localhost:8000/bankapp/v1/account/',json={})
+        res = client.post(self.host + self.post_sample_api,json={})
         for ro in self.test_2:
             row = json.loads(ro)
             res = {}
@@ -68,7 +67,7 @@ class BankTestCase(TestCase):
 
     def testSet3(self):
         client = RequestsClient()
-        res = client.post('http://localhost:8000/bankapp/v1/account/',json={})
+        res = client.post(self.host + self.post_sample_api,json={})
         for ro in self.test_3:
             row = json.loads(ro)
             res = {}
