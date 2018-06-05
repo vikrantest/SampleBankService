@@ -28,7 +28,12 @@ Tech Stack -
 	Django - rest framework in python
 	SQLite - light weight sql database.
 	
-
+Basic Requirements - 
+	Python - Make sure you have python2.7 or newer version installed in your machine.
+		If not then visit this link - https://www.python.org/downloads/
+	PIP - Check if pip is installed in your machine or not . If Yes then cheers and got to Directory Structure , else go to below link.
+		https://www.makeuseof.com/tag/install-pip-for-python/
+		
 Directory structure
 
 	├── bankapp
