@@ -2,22 +2,14 @@
 
 pythonpath=$(which python3)
 root_directory=$(pwd)
+echo $root_directory
 
 requirement_file='/requirements.txt'
-data_build_file='/buildapp/data_build.py'
-project_manage_file='/manage.py'
+data_build_dir='/buildapp'
 echo $(pwd)
-
 # pip install --user pipenv
-echo $(which virtualenv)
-echo $(which virtualenvwrapper.sh)
 
 $(which virtualenvwrapper.sh) tala_proj
 pip install -r $root_directory$requirement_file
 
-cd ..
-
-root_directory=$(pwd)
-$(which python) $root_directory$project_manage_file makemigrations
-$(which python) $root_directory$project_manage_file migrate
-$(which python) $root_directory$data_build_file
+./data_build

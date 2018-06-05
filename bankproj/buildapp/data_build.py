@@ -11,13 +11,13 @@ application = get_wsgi_application()
 
 from bankapp.models import AccountRules,BankCurrency,BankAccountProfile,BankAccount
 
-class ProjectDataSet:
+class ProjectTestDataSet:
 
 	def __init__(self):
 		self.account_request_data = {'first_name':'vikrant','last_name':'singh','date_of_birth':651024128,'gender':'male','address':'bangalore','pincode':'560076',
 								'account_id_num':'DULPS1990V','account_number':'HSBC100023456','ifsc_code':'HSBC1000'}
 		self.currency_request_data = {'currency_name':'dollar','currency_symbol':'$'}
-		self.account_rules_data = {'max_deposit_per_transaction':60,'max_deposit_per_day_frequency':4,'max_deposit_per_day':150,
+		self.account_rules_data = {'max_deposit_per_transaction':60,'max_deposit_per_day_frequency':4,'max_deposit_per_day':160,
 						'min_withdrawl_per_transaction':20,'min_withdrawl_per_day_frequency':3,'min_withdrawl_per_day':50}
 
 	def setup(self):
@@ -39,4 +39,5 @@ class ProjectDataSet:
 						account_rules=account_rules_obj,account_ifsc=self.account_request_data['ifsc_code'],account_currency=currency_obj)
 
 
-ProjectDataSet().setup()
+ProjectTestDataSet().setup()
+

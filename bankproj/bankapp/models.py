@@ -6,7 +6,6 @@ import time
 from django.db import models
 from bankapp.utils import get_time,get_local_day_start_end
 
-
 class BaseModel(models.Model):
 	created_at = models.IntegerField(blank=False)
 	updated_at = models.IntegerField(blank=False)
@@ -21,7 +20,6 @@ class BaseModel(models.Model):
 
 		except ValueError:
 			return False
-
 
 class BankCurrency(models.Model):
 	currency_name = models.CharField(max_length = 25)

@@ -36,7 +36,7 @@ class ResponseEngine:
 		elif dataset['status_code'] == '201':
 			status_code = status.HTTP_201_CREATED
 
-		if not dataset['body']:
+		if not dataset.get('body'):
 			response_data = {'message':dataset.get('message','')}
 		else:
 			response_data = {'message':dataset.get('message',''),'data':dataset.get('body',{})}
@@ -67,22 +67,22 @@ class RuleEngine:
 
 	def creditTransaction(self,bank_account,amount):
 		if self.rules_set.max_deposit_per_transaction < amount:
-			return False , 'You cannot deposit more than - {} in single transaction.'.format(str(self.rules_set.max_deposit_per_transaction))
+			return False , 'Exceeded Maximum Deposit Per Transaction.'
 		current_day_transaction = self.currenDayTransactions(bank_account,'credit')
 		if current_day_transaction[0] >= self.rules_set.max_deposit_per_day_frequency:
-			return False , 'You cannot deposit more than - {} times in single day.'.format(str(self.rules_set.max_deposit_per_day_frequency))
+			return False , 'Exceeded Maximum Deposit Transaction Per Day.'
 		if current_day_transaction[1]+amount >= self.rules_set.max_deposit_per_day:
-			return False , 'You cannot deposit more than - {} in single day.'.format(str(self.rules_set.max_deposit_per_day))
+			return False , 'Exceeded Maximum Deposit Per Day.'
 		return True , 'You are eligible for this transaction'
 
 	def debitTransaction(self,bank_account,amount):
 		if bank_account.account_balance < amount:
-			return False , 'Insufficent account balance - {}'.format(str(bank_account.account_balance))
+			return False , 'Insufficent Account Balance.'
 		if self.rules_set.min_withdrawl_per_transaction < amount:
-			return False , 'You cannot withdraw more than - {} in single transaction.'.format(str(self.rules_set.min_withdrawl_per_transaction))
+			return False , 'Exceeded Maximum Withdrawal Per Transaction.'
 		current_day_transaction = self.currenDayTransactions(bank_account,'debit')
 		if current_day_transaction[0] >= self.rules_set.min_withdrawl_per_day_frequency:
-			return False , 'You cannot withdraw more than - {} times in single day.'.format(str(self.rules_set.min_withdrawl_per_day_frequency))
+			return False , 'Exceeded Maximum Withdrawal Transaction Per Day.'
 		if current_day_transaction[1]+amount >= self.rules_set.min_withdrawl_per_day:
-			return False , 'You cannot withdraw more than - {} in single day.'.format(str(self.rules_set.min_withdrawl_per_day))
+			return False , 'Exceeded Maximum Withdrawal Per Day.'
 		return True , 'You are eligible for this transaction'

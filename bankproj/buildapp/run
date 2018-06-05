@@ -4,4 +4,4 @@ pythonpath=$(which python3)
 root_directory=$(pwd)
 project_manage_file='/../manage.py'
 
-$(which python) $root_directory$project_manage_file runserver 127.0.0.1:8080
+$(which python3) $root_directory$project_manage_file runserver localhost:8000

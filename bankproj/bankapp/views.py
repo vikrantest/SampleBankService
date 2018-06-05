@@ -11,6 +11,7 @@ from bankapp.serializers import AccountSerializers
 from bankapp.validators import Validator
 from bankapp.engine import ResponseEngine,RuleEngine
 from bankapp.utils import get_time
+from buildapp.data_build import ProjectTestDataSet
 
 
 class TransationValidations:
@@ -34,11 +35,17 @@ class AccountView(APIView):
 	
 	def get(self,request):
 		response = ResponseEngine()
-		bank_account = BankAccount.objects.filter()[0]
-		if not bank_account:
+		bank_account = BankAccount.objects.filter()
+		if len(bank_account)<1:
 			return response('error',{'message':'No account found.','status_code':'400'})
-		account_obj_data = AccountSerializers(bank_account).data
+		account_obj_data = AccountSerializers(bank_account[0]).data
 		return response('success',{'message':'Account details.','status_code':'200','body':account_obj_data})
+
+	def post(self,request):
+		response = ResponseEngine()
+		ProjectTestDataSet().setup()
+		return response('success',{'message':'Test Account Details Added Successfully.','status_code':'201'})
+
 
 
 
@@ -69,7 +76,7 @@ class AccountMoneyDeposit(APIView):
 		bank_account.save()
 
 
-		return response('success',{'message':'Amount of {} {} successfully deposited.'.format(str(bank_account.getAccountCurrency()),str(amount)),'status_code':'200','body':{}})
+		return response('success',{'message':'Amount of {} {} Successfully Deposited.'.format(str(bank_account.getAccountCurrency()),str(amount)),'status_code':'200','body':{}})
 
 
 class AccountMoneyWithdrawl(APIView):
@@ -84,8 +91,7 @@ class AccountMoneyWithdrawl(APIView):
 		transaction_type = 'debit'
 		amount,valid_amount = Validator.isValidAmount(request_data.get('amount'))
 		if not valid_amount:
-			return response('error',{'message':'Invalid amount for withdrawn - {}.'.format(str(amount)),'status_code':'400'})
-
+			return response('error',{'message':'Invalid amount for withdrawl - {}.'.format(str(amount)),'status_code':'400'})
 
 		bank_account = BankAccount.objects.filter()[0]
 		if not bank_account:
@@ -100,4 +106,4 @@ class AccountMoneyWithdrawl(APIView):
 		bank_account.save()
 
 
-		return response('success',{'message':'Amount of {} {} successfully withdrawn.'.format(str(bank_account.getAccountCurrency()),str(amount)),'status_code':'200','body':{}})
+		return response('success',{'message':'Amount of {} {} Successfully Withdrawn.'.format(str(bank_account.getAccountCurrency()),str(amount)),'status_code':'200','body':{}})

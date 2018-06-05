@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_nose',
     'rest_framework',
     'bankapp',
     'buildapp'
@@ -102,6 +103,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+# TEST_RUNNER = 'xmlrunner.extra.djangotestrunner.XMLTestRunner'
+# TEST_OUTPUT_FILE_NAME = 'unit.xml'
+
+#code coverage tool
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=bankapp',
+    '--cover-html',
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
