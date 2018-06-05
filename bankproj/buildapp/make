@@ -9,7 +9,10 @@ data_build_dir='/buildapp'
 echo $(pwd)
 # pip install --user pipenv
 
-$(which virtualenvwrapper.sh) tala_proj
+echo 'Installing requirements..................................................'
+echo '\n'
+echo '\n'
 pip install -r $root_directory$requirement_file
 
-./data_build
+./data_build $1
+

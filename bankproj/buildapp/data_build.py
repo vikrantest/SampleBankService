@@ -38,6 +38,6 @@ class ProjectTestDataSet:
 		account_obj = BankAccount.objects.create(account_profile=account_profile_obj,account_number=self.account_request_data['account_number'],
 						account_rules=account_rules_obj,account_ifsc=self.account_request_data['ifsc_code'],account_currency=currency_obj)
 
-
-ProjectTestDataSet().setup()
+if __name__ == '__main__':
+	ProjectTestDataSet().setup()
 
