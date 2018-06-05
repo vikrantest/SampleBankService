@@ -81,7 +81,7 @@ class BankAccount(BaseModel):
 class Transactions(BaseModel):#change to sender and reciever
 	from_account = models.ForeignKey(BankAccount,blank=True,null=True,related_name = 'account_transactions_from_account')
 	to_account = models.ForeignKey(BankAccount,related_name = 'account_transactions_to_account')
-	transaction_id = models.CharField(max_length = 10)#change length in next migration
+	transaction_id = models.CharField(max_length = 50)#change length in next migration
 	transaction_type = models.CharField(max_length = 10)#,choices=[('credit','credit')('debit','debit')])
 	transaction_source = models.CharField(max_length = 10)
 	transaction_amount = models.FloatField(default=0.00)
