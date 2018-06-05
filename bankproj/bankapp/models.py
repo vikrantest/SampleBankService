@@ -14,7 +14,6 @@ class BaseModel(models.Model):
 
 	def save(self,*args,**kwargs):
 		try:
-			print '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
 			if not self.created_at:
 				self.created_at = get_time()
 			self.updated_at = get_time()

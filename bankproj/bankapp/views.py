@@ -14,6 +14,10 @@ from bankapp.utils import get_time
 
 
 class TransationValidations:
+	"""
+	TransationValidations for validating transactions based on rules for different ops on account
+	"""
+
 
 	@staticmethod
 	def isValidTransaction(bank_account,amount,transaction_time,transaction_type):
@@ -50,7 +54,7 @@ class AccountMoneyDeposit(APIView):
 		transaction_type = 'credit'
 		amount,valid_amount = Validator.isValidAmount(request_data.get('amount'))
 		if not valid_amount:
-			return response('error',{'message':'Invalid amount for deposit - {}'.format(str(amount)),'status_code':'400'})
+			return response('error',{'message':'Invalid amount for deposit - {}.'.format(str(amount)),'status_code':'400'})
 
 		bank_account = BankAccount.objects.filter()[0]
 		if not bank_account:
@@ -65,7 +69,7 @@ class AccountMoneyDeposit(APIView):
 		bank_account.save()
 
 
-		return response('success',{'message':'Amount of {} {} successfully withdrawl.'.format(str(bank_account.getAccountCurrency()),str(amount)),'status_code':'200','body':account_obj_data})
+		return response('success',{'message':'Amount of {} {} successfully deposited.'.format(str(bank_account.getAccountCurrency()),str(amount)),'status_code':'200','body':{}})
 
 
 class AccountMoneyWithdrawl(APIView):
@@ -80,7 +84,7 @@ class AccountMoneyWithdrawl(APIView):
 		transaction_type = 'debit'
 		amount,valid_amount = Validator.isValidAmount(request_data.get('amount'))
 		if not valid_amount:
-			return response('error',{'message':'Invalid amount for deposit - {}'.format(str(amount)),'status_code':'400'})
+			return response('error',{'message':'Invalid amount for withdrawn - {}.'.format(str(amount)),'status_code':'400'})
 
 
 		bank_account = BankAccount.objects.filter()[0]
@@ -96,4 +100,4 @@ class AccountMoneyWithdrawl(APIView):
 		bank_account.save()
 
 
-		return response('success',{'message':'Amount of {} {} successfully withdrawl.'.format(str(bank_account.getAccountCurrency()),str(amount)),'status_code':'200','body':{}})
+		return response('success',{'message':'Amount of {} {} successfully withdrawn.'.format(str(bank_account.getAccountCurrency()),str(amount)),'status_code':'200','body':{}})
