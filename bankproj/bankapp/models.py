@@ -7,6 +7,9 @@ from django.db import models
 from bankapp.utils import get_time,get_local_day_start_end
 
 class BaseModel(models.Model):
+	"""
+	Base Model with common created at and modified at field
+	"""
 	created_at = models.IntegerField(blank=False)
 	updated_at = models.IntegerField(blank=False)
 
@@ -21,6 +24,9 @@ class BaseModel(models.Model):
 			return False
 
 class BankCurrency(models.Model):
+	"""
+	Currency table for storing different currencies supported by bank
+	"""
 	currency_name = models.CharField(max_length = 25)
 	currency_symbol = models.CharField(max_length = 5)
 
@@ -28,6 +34,9 @@ class BankCurrency(models.Model):
 		db_table = 'bank_currencies'
 
 class AccountRules(BaseModel):
+	"""
+	Account basic rules , applicable for each transaction
+	"""
 	min_balance = models.FloatField(default=0.00)
 	max_deposit_per_transaction = models.FloatField(default=0.00)
 	max_deposit_per_day_frequency = models.IntegerField(default=0)
@@ -40,6 +49,9 @@ class AccountRules(BaseModel):
 		db_table = 'account_rules'
 
 class BankAccountProfile(BaseModel):
+	"""
+	Account's owner profile data with their basic details
+	"""
 	first_name = models.CharField(max_length = 10)
 	last_name = models.CharField(max_length = 10)
 	date_of_birth = models.IntegerField(blank=False,null=False)
@@ -53,6 +65,9 @@ class BankAccountProfile(BaseModel):
 		db_table = 'account_profile'
 
 class BankAccount(BaseModel):
+	"""
+	Bank account class with basic account details
+	"""
 	account_profile = models.ForeignKey(BankAccountProfile,related_name = 'bank_accounts_profile')
 	account_number = models.CharField(max_length = 30)
 	account_rules = models.ForeignKey(AccountRules,related_name = 'bank_accounts_rules')
@@ -79,6 +94,9 @@ class BankAccount(BaseModel):
 
 
 class Transactions(BaseModel):#change to sender and reciever
+	"""
+	Transaction model to track each transactions for an account
+	"""
 	from_account = models.ForeignKey(BankAccount,blank=True,null=True,related_name = 'account_transactions_from_account')
 	to_account = models.ForeignKey(BankAccount,related_name = 'account_transactions_to_account')
 	transaction_id = models.CharField(max_length = 50)#change length in next migration

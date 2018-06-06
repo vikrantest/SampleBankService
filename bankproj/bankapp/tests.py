@@ -12,6 +12,9 @@ import subprocess
 
 
 class BankTestCase(TestCase):
+    '''
+    BankTestCase - testcases to test all end pints with inputs and expected response stored in test files
+    '''
 
     def setUp(self):
         self.test_1 = []
@@ -35,7 +38,7 @@ class BankTestCase(TestCase):
 
     def testSet1(self):
         client = RequestsClient()
-        res = client.post(self.host + self.post_sample_api,json={})
+        res = client.post(self.host + self.post_sample_api,json={'source':'TestCase'})
         for ro in self.test_1:
             row = json.loads(ro)
             res = {}
@@ -51,7 +54,7 @@ class BankTestCase(TestCase):
 
     def testSet2(self):
         client = RequestsClient()
-        res = client.post(self.host + self.post_sample_api,json={})
+        res = client.post(self.host + self.post_sample_api,json={'source':'TestCase'})
         for ro in self.test_2:
             row = json.loads(ro)
             res = {}
@@ -67,7 +70,7 @@ class BankTestCase(TestCase):
 
     def testSet3(self):
         client = RequestsClient()
-        res = client.post(self.host + self.post_sample_api,json={})
+        res = client.post(self.host + self.post_sample_api,json={'source':'TestCase'})
         for ro in self.test_3:
             row = json.loads(ro)
             res = {}

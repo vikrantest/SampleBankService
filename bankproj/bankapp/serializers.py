@@ -6,6 +6,9 @@ from rest_framework import serializers
 from bankapp.models import *
 
 class AccountSerializers(serializers.ModelSerializer):
+	"""
+	Model Serilaizer class for serializing bank account data
+	"""
 	currency = serializers.ReadOnlyField(source = 'getAccountCurrency')
 	
 

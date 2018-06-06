@@ -23,11 +23,12 @@ class ResponseEngine:
 	def errorResponse(self,dataset):
 		if dataset['status_code'] == '400':
 			status_code = status.HTTP_400_BAD_REQUEST
-
-		response_data = {'error':dataset.get('message','')}
-
-
-		return Response(response_data,status=status_code)
+			response_data = {'error':dataset.get('message','')}
+			return Response(response_data,status=status_code)
+		elif dataset['status_code'] == '405':
+			status_code = status.HTTP_405_METHOD_NOT_ALLOWED
+			response_data = {}
+			return Response(status=status_code)
 
 
 	def successResponse(self,dataset):
@@ -48,7 +49,7 @@ class ResponseEngine:
 
 class RuleEngine:
 	"""
-	Rule engine for validating transaction
+	Rule engine for validating transaction based on transaction type
 	"""
 
 	def __init__(self,rules_set,transaction_time=None):

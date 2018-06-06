@@ -42,9 +42,13 @@ class AccountView(APIView):
 		return response('success',{'message':'Account details.','status_code':'200','body':account_obj_data})
 
 	def post(self,request):
+		request_data = request.data
 		response = ResponseEngine()
-		ProjectTestDataSet().setup()
-		return response('success',{'message':'Test Account Details Added Successfully.','status_code':'201'})
+		if request_data.get('source',None) and request_data.get('source') == 'TestCase':
+			ProjectTestDataSet().setup()
+			return response('success',{'message':'Test Account Details Added Successfully.','status_code':'201'})
+		else:
+			return response('error',{'message':'','status_code':'405'})
 
 
 
