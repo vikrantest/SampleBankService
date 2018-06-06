@@ -27,14 +27,11 @@ class BankTestCase(TestCase):
         # subprocess.call(['./data_build'])
         # os.chdir(curr)
         with open('testfiles/http01.json') as f:
-            for line in f:
-                self.test_1.append(line)
+            self.test_1 = list(f)
         with open('testfiles/http02.json') as f:
-            for line in f:
-                self.test_2.append(line)
+            self.test_2 = list(f)
         with open('testfiles/http03.json') as f:
-            for line in f:
-                self.test_3.append(line)
+            self.test_3 = list(f)
 
     def testSet1(self):
         client = RequestsClient()
